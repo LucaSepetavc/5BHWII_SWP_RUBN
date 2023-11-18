@@ -2,37 +2,35 @@ import random
 import matplotlib.pyplot as plt
 
 
-selectedNumber = []
+def main():
+    numbers = []
+    results = {}
+    range_of_numbers = 45
+    rounds = 100000
 
-numbers = [] 
-results = {}
+    for x in range(range_of_numbers):
+        x = x + 1
+        results[x] = 0
+        numbers.append(x)
+
+    for f in range(rounds):
+        for i in range(6):
+            results[draw(i, numbers, range_of_numbers)] += 1
+
+    print(results)
+    plt.bar(results.keys(), results.values())
+    plt.xlabel('Zahlen')
+    plt.ylabel('Anzahl der gezogenen Zahl')
+    plt.title('Lottoziehungen')
+    plt.show()
 
   
-def draw(aufrufe, numbers):
-    i = 44 - aufrufe
-    index = random.randint(0,i) 
-    
-    randomNumber = numbers[index]
-    numbers[index] = numbers[i]
-    numbers[i] = randomNumber
-    selectedNumber.append(randomNumber)
-    
-    old = results.get(randomNumber)
-    
-    results[randomNumber] = old + 1
+def draw(aufrufe, numbers, range_of_numbers):
+    i = range_of_numbers - 1 - aufrufe
+    index = random.randint(0, i)
+    numbers[index], numbers[i] = numbers[i], numbers[index]
+    return numbers[i]
     
 
-for x in range(45):
-    x = x+1 
-    results[x] = 0
-    numbers.append(x)
-    
-             
-for f in range(1000):
-    for i in range(6):
-        draw(i, numbers)
-
-print(results)
-
-plt.bar(results.keys(), results.values())
-plt.show()
+if __name__ == "__main__":
+    main()
